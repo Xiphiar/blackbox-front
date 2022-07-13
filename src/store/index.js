@@ -7,7 +7,7 @@ export default createStore({
         //operator_url: "http://localhost:3000",
 
         //MAINNET
-        queryJs: new CosmWasmClient("https://secret-4.api.trivium.network:1317"),
+        queryJs: new CosmWasmClient("https://api.scrt.network"),
         chainId: "secret-4",
         token_address: "secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek",
         token_code_hash: "AF74387E276BE8874F07BEC3A87023EE49B0E7EBE08178C49D0A49C3C98ED60E",
