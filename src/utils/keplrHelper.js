@@ -6,7 +6,7 @@ const { ExtendedSender } = require('./extendedSigner')
 const customFees = {
     exec: {
         amount: [{ amount: "50000", denom: "uscrt" }],
-        gas: "200000",
+        gas: "600000",
     }
 }
 

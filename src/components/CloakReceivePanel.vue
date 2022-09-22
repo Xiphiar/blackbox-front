@@ -90,7 +90,7 @@ export default {
                     return false;
                 }
 
-                //ensure signing client is in glibal state
+                //ensure signing client is in global state
                 if (!this.$store.getters.hasSigningClient){
                     this.$store.dispatch("setSigningClient", await getSigningClient("secret-4"));
                 }
@@ -113,6 +113,10 @@ export default {
                 //handle non breaking errors
                 if (response.status !== 200){
                     throw `Invalid Response: ${response.data?.message}`
+                }
+
+                if (response.data.code){
+                    throw `Transaction Failed: ${response.data.raw_log}`
                 }
 
                 //show success toast if no error was thrown
