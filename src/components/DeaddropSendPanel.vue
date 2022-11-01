@@ -9,7 +9,10 @@
             <h1>Alias</h1>
             <input type="text" placeholder="..." required v-model="state.destination">
             <h1>Amount</h1>
-            <img class="token pointer" v-on:click="SelectToken" :src="TokenImage" alt="">
+            <div class="dropdownContainer pointer" v-on:click="SelectToken">
+                <img class="token" :src="TokenImage" alt="">
+                <div class="bottomRight">▼</div>
+            </div>
             <input type="text" :placeholder="TokenDenom" required v-model="state.amount">
         </div>
         <div class="txbutton" v-if="!state.loading">
@@ -229,11 +232,6 @@ export default {
     transform: translate(-125%, -20%);
 }
 
-.token:hover {
-    filter: brightness(25%);
-}
-
-
 
 .input-section {
     padding-top: 20%;
@@ -298,6 +296,24 @@ input {
 
 .pointer {
     cursor: pointer;
+}
+
+.dropdownContainer {
+  position: fixed;
+  transform: translate(135%);
+  text-align: center;
+  color: white;
+  width: 50px;
+  height: 50px;
+}
+.dropdownContainer:hover {
+    filter: brightness(25%);
+}
+
+.bottomRight {
+  position: fixed;
+  bottom: 0px;
+  right: 30px;
 }
 
 </style>
