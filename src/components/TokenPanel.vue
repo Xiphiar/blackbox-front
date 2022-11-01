@@ -10,6 +10,10 @@
             <img class="token" src="/tokenIcons/usdt_ethereum.svg" alt="">
             <div>sUSDT</div>
         </div>
+        <div class="token-data pointer" @click="ConfirmToken('ALTER', 'alter.svg', 'secret12rcvz0umvk875kd6a803txhtlu7y0pnd73kcej', 6)">
+            <img class="token" src="/tokenIcons/alter.svg" alt="ALTER">
+            <div>ALTER</div>
+        </div>
         <div class="token-data pointer" @click="ConfirmToken('sATOM', 'atom.png', 'secret14mzwd0ps5q277l20ly2q3aetqe3ev4m4260gf4', 6)">
             <img class="token" src="/tokenIcons/atom.png" alt="">
             <div>sATOM</div>
