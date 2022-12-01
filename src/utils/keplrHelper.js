@@ -56,7 +56,7 @@ async function suggestPulsar() {
 }
 
 async function getSigningClient(chainId) {
-    let apiUrl = "https://secret-4.api.trivium.network:1317"
+    let apiUrl = "https://lcd.spartanapi.dev"
     if (chainId.includes("ulsar")){
         await suggestPulsar();
         apiUrl = "http://66.85.142.147:11317"
