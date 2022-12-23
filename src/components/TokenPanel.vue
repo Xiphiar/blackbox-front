@@ -18,9 +18,9 @@
             <img class="token" src="/tokenIcons/atom.png" alt="">
             <div>sATOM</div>
         </div>
-        <div class="token-data pointer" @click="ConfirmToken('sLUNA', 'luna.png', 'secret1ra7avvjh9fhr7dtr3djutugwj59ptctsrakyyw', 6)">
+        <div class="token-data pointer" @click="ConfirmToken('sLUNC', 'luna.png', 'secret1ra7avvjh9fhr7dtr3djutugwj59ptctsrakyyw', 6)">
             <img class="token" src="/tokenIcons/luna.png" alt="">
-            <div>sLUNA</div>
+            <div>sLUNC</div>
         </div>
         <div class="token-data pointer" @click="ConfirmToken('SEFI', 'sefi.svg', 'secret15l9cqgz5uezgydrglaak5ahfac69kmx2qpd6xt', 6)">
             <img class="token" src="/tokenIcons/sefi.svg" alt="">

@@ -72,8 +72,12 @@ export default {
                     }
                 }; 
 
+                const fee = {
+                    gas: "80000",
+                }
+
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(this.$store.state.cloak_address, cloakMsg);
+                let response = await this.$store.state.secretJs.execute(this.$store.state.cloak_address, cloakMsg, undefined, undefined, fee);
                 if (response.code){
                     this.toast.error(`Transaction Failed: ${response.raw_log}`, {
                         timeout: 8000

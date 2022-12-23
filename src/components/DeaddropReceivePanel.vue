@@ -90,8 +90,12 @@ export default {
                     }
                 }
 
+                const fee = {
+                    gas: "80000",
+                }
+
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(this.$store.state.token_address, sendMsg);
+                let response = await this.$store.state.secretJs.execute(this.$store.state.token_address, sendMsg, undefined, undefined, fee);
                 if (response.code){
                     this.toast.error(`Transaction Failed: ${response.raw_log}`, {
                         timeout: 8000
@@ -116,16 +120,18 @@ export default {
                     })
                 } else {
                     const logs = this.$store.state.secretJs.processLogs(data);
-                    console.log(logs.kv_logs.alias)
+                    console.log(logs.kv_logs.wasm.alias)
                     this.toast.success("Transaction Succeeded!", {
                         timeout: 8000
                     });
-                    this.state.outAlias = logs.kv_logs.alias
+                    if (!logs.kv_logs.wasm.alias) throw "Failed to fetch alias from transaction. Please check the TX logs in the F12 console."
+                    this.state.outAlias = logs.kv_logs.wasm.alias
                 }
                 
             } catch(e) {
+                console.error(e)
                 this.state.loading= false;
-                this.toast.error(`Unknown error occured: ${e}`, {
+                this.toast.error(`${e}`, {
                     timeout: 8000
                 })
             }
