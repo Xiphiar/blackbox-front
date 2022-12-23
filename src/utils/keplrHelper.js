@@ -59,8 +59,9 @@ async function getSigningClient(chainId) {
     let apiUrl = "https://lcd.spartanapi.dev"
     if (chainId.includes("ulsar")){
         await suggestPulsar();
-        apiUrl = "http://66.85.142.147:11317"
+        apiUrl = "https://pulsar-2.api.trivium.network:1317"
     }
+    if (!window.keplr) throw 'Keplr Wallet not found. Is it enabled and unlocked?';
     window.keplr.enable(chainId);
     const offlineSigner = window.getOfflineSigner(chainId);
     const enigmaUtils = window.getEnigmaUtils(chainId);

@@ -51,6 +51,12 @@ export default createStore({
             }
             return true;
         },
+        getAddress: function (state) {
+            if (!state.secretJs) {
+                return undefined;
+            }
+            return state.secretJs.senderAddress;
+        },
         getKeyHistory: function (state) {
             if (!state.secretJs) {
                 return false;

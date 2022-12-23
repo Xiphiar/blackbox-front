@@ -1,6 +1,7 @@
 <template>
     <form class="action-box controls">
         <div class="input-section">
+            <div v-html="getStatus()" />
             <div class="tx-type-section">
                 <span class="unselected pointer" v-on:click="ToSend">Send</span>
                 <span> / </span>
@@ -43,18 +44,32 @@ export default {
             state: {
                 loading: false,
                 tx_key: "",
-                destination: ""
+                destination: "",
+                status: false,
+                loadingStatus: true,
             }
         }
     },
     setup() {
-      // Get toast interface
-      const toast = useToast();
+        // Get toast interface
+        const toast = useToast();
 
-      // Make it available inside methods
-      return { toast }
+        // Make toast available inside methods
+        return { toast }
+    },
+    mounted:function(){
+        this.CheckStatus() // CheckStatus will execute at pageload
     },
     methods: {
+        getStatus(){
+            if (( this.state.loadingStatus)) {
+                return '<div><span>Service Status:</span> <i class="c-inline-spinner" /></div>'
+            }
+            if ((this.state.status)){
+                return  '<div><span>Service Status:</span> <span style="color: green">Operational</span></div>'
+            }
+            else return '<div><span>Service Status:</span> <span style="color: red">Offline</span></div>'
+        },
         ReturnHome: function() {
             this.$emit('ReturnHome')
         },
@@ -125,20 +140,53 @@ export default {
                 });
 
             } catch(e) {
-                const errorMsg = e.response?.data?.message || e.toString()
-                //log error to console
-                console.error(errorMsg)
+                console.error(e);
+
+                let errorMsg = e.response?.data?.message || e.toString()
+                if (errorMsg.includes('Network Error')) errorMsg = 'Failed to contact the Cloak API. Please try again or contact Trivium.';
 
                 //dismiss processing toast
                 this.toast.dismiss("tx-processing");
 
                 //show error toast
-                this.toast.error(`Unknown error occured: ${errorMsg}`, {
+                this.toast.error(`${errorMsg}`, {
                     timeout: 8000
                 })
                                     
                 //show button again
                 this.state.loading=false;
+            }
+
+        },
+        CheckStatus: async function() {
+            try{
+                //replace button with spinner
+                this.state.loadingStatus = true;
+                //send request to backend
+                const response = await axios.get(`${this.$store.state.operator_url}/release/status`)
+                console.log(response)
+
+                //handle non breaking errors
+                if (response.status !== 200){
+                    this.state.status = false;
+                    this.state.loadingStatus = false;
+                    return;
+                }
+
+                if (!response.data.status){
+                    this.state.status = false;
+                    this.state.loadingStatus = false;
+                    return;
+                }
+
+                this.state.status = true;
+                this.state.loadingStatus = false;
+
+            } catch(e) {
+                const errorMsg = e.response?.data?.message || e.toString()
+                //log error to console
+                console.error(errorMsg)
+                this.state.loadingStatus=false;
             }
 
         }
