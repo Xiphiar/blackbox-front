@@ -53,7 +53,7 @@ export default {
             TokenSelect: false,
             TokenDenom: "sSCRT",
             TokenAddress: token_address, //secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek",
-            TokenImage: "/tokenIcons/scrt.svg",
+            TokenImage: "/tokenIcons/secret-network.svg",
             TokenDecimals: 6,
 
         }

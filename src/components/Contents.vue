@@ -6,7 +6,8 @@
         </div>
 
         <div class="info">
-            <img src="@/assets/BlackBoxTitle.svg" alt="BlackBox" class="logo">
+            <!-- <img src="@/assets/BlackBoxTitle.svg" alt="BlackBox" class="logo"> -->
+            <img src="blackboxnice-min.png" alt="BlackBox" class="logo" />
             <div class="sub-title"><glitched-writer :text="subtitle" preset="encrypted" :options="{ delay: [100,400] }"/></div>
             <!---<div class="description">{{ description }}</div>--->
             <div class="description"><glitched-writer :text="description" preset="encrypted" :options="{ delay: [100,400] }"/></div>

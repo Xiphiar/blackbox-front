@@ -7,7 +7,7 @@
                 <span class="unselected pointer" v-on:click="ToReceive">Receive</span>
             </div>
             <h1>Amount</h1>
-            <img class="token" src="/tokenIcons/scrt.svg" alt="">
+            <img class="token" src="/tokenIcons/secret-network.svg" alt="">
             <input type="text" v-model="state.amount" placeholder="sSCRT" required>
             <div class="withdraw pointer"><a v-on:click="ToCancel">(Cancel Pending Transactions)</a></div>
         </div>

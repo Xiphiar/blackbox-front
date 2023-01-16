@@ -2,7 +2,13 @@
     <div class="action-box popup">
 
     <div class="token-scroll">
-        <div class="token-data pointer" @click="ConfirmToken('sSCRT', 'scrt.svg', 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek', 6)">
+
+        <div v-for="(token, index) in tokenList" :key="index" class="token-data pointer" @click="ConfirmToken(token.symbol, token.icon, token.address, token.decimals)">
+            <img class="token" :src="`/tokenIcons/${token.icon}`" alt="">
+            <div>{{ token.symbol }}</div>
+        </div>
+        
+        <!-- <div class="token-data pointer" @click="ConfirmToken('sSCRT', 'scrt.svg', 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek', 6)">
             <img class="token" src="/tokenIcons/scrt.svg" alt="">
             <div>sSCRT</div>
         </div>
@@ -45,7 +51,7 @@
         <div class="token-data pointer" @click="ConfirmToken('sUST', 'ust.png', 'secret129h4vu66y3gry6wzwa24rw0vtqjyn8tujuwtn9', 6)">
             <img class="token" src="/tokenIcons/ust.png" alt="">
             <div>sUST</div>
-        </div>
+        </div> -->
         
 
     </div>
@@ -58,30 +64,29 @@
 
 
 <script>
+    import { tokenList } from '../store/tokens'
 
+    export default {
+        name: 'TokenPanel',
+        components: {
 
-
-export default {
-    name: 'TokenPanel',
-    components: {
-
-    },
-    data() {
-        return {
-            test: "bing",
-            
-        }
-    },
-    methods: {
-        ReturnHome: function() {
-            this.$emit('ReturnHome')
         },
-        ConfirmToken: function(denom, img, address, decimals) {
-            this.$emit(`ConfirmToken`, denom, img, address, decimals)
-        }
+        data() {
+            return {
+                test: "bing",
+                tokenList
+            }
+        },
+        methods: {
+            ReturnHome: function() {
+                this.$emit('ReturnHome')
+            },
+            ConfirmToken: function(denom, img, address, decimals) {
+                this.$emit(`ConfirmToken`, denom, img, address, decimals)
+            }
+        }        
     }
-    
-}
+
 </script>
 
 
