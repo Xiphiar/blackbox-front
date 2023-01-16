@@ -34,6 +34,7 @@ import { getSigningClient, countDecimals } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import TokenPanel from './TokenPanel.vue'
 import { useToast } from "vue-toastification";
+import { chainId, token_address, deaddrop_address } from '../store/config';
 
 
 export default {
@@ -51,7 +52,7 @@ export default {
             },
             TokenSelect: false,
             TokenDenom: "sSCRT",
-            TokenAddress: this.$store.state.token_address, //secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek",
+            TokenAddress: token_address, //secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek",
             TokenImage: "/tokenIcons/scrt.svg",
             TokenDecimals: 6,
 
@@ -91,7 +92,7 @@ export default {
 
                 //ensure signing client is in glibal state
                 if (!this.$store.getters.hasSigningClient){
-                    this.$store.dispatch("setSigningClient", await getSigningClient(this.$store.state.chainId));
+                    this.$store.dispatch("setSigningClient", await getSigningClient(chainId));
                 }
 
                 //cancel if no destination
@@ -145,7 +146,7 @@ export default {
                 const sendMsg = {
                     send: {
                         amount: amount.toString(),
-                        recipient: this.$store.state.deaddrop_address, //deaddrop contract
+                        recipient: deaddrop_address, //deaddrop contract
                         msg: Buffer.from(JSON.stringify(ddMsg)).toString('base64')
                     }
                 }

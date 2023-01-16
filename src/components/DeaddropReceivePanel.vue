@@ -30,6 +30,7 @@
 import { getSigningClient } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
+import { chainId, deaddrop_address, token_address } from '../store/config';
 
 export default {
     name: 'DeaddropReceivePanel',
@@ -64,7 +65,7 @@ export default {
                 this.state.loading= true;
                 //ensure signing client is in glibal state
                 if (!this.$store.getters.hasSigningClient){
-                    this.$store.dispatch("setSigningClient", await getSigningClient(this.$store.state.chainId));
+                    this.$store.dispatch("setSigningClient", await getSigningClient(chainId));
                 }
 
                 //message for the deaddrop contract
@@ -85,7 +86,7 @@ export default {
                 const sendMsg = {
                     send: {
                         amount: "0",
-                        recipient: this.$store.state.deaddrop_address, //deaddrop address
+                        recipient: deaddrop_address, //deaddrop address
                         msg: Buffer.from(JSON.stringify(setMsg)).toString('base64')
                     }
                 }
@@ -95,7 +96,7 @@ export default {
                 }
 
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(this.$store.state.token_address, sendMsg, undefined, undefined, fee);
+                let response = await this.$store.state.secretJs.execute(token_address, sendMsg, undefined, undefined, fee);
                 if (response.code){
                     this.toast.error(`Transaction Failed: ${response.raw_log}`, {
                         timeout: 8000

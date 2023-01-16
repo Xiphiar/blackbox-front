@@ -33,6 +33,7 @@ import { getSigningClient, isValidAddress } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
 import axios from "axios";
+import { operator_url } from '../store/config';
 
 export default {
     name: 'CloakReceivePanel',
@@ -118,7 +119,7 @@ export default {
                 });
 
                 //send request to backend
-                const response = await axios.get(`${this.$store.state.operator_url}/release?txkey=${this.state.tx_key.trim()}&sender=${this.state.destination.trim()}`)
+                const response = await axios.get(`${operator_url}/release?txkey=${this.state.tx_key.trim()}&sender=${this.state.destination.trim()}`)
                 console.log(response)
 
                 //show button again
@@ -163,7 +164,7 @@ export default {
                 //replace button with spinner
                 this.state.loadingStatus = true;
                 //send request to backend
-                const response = await axios.get(`${this.$store.state.operator_url}/release/status`)
+                const response = await axios.get(`${operator_url}/release/status`)
                 console.log(response)
 
                 //handle non breaking errors
