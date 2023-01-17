@@ -57,7 +57,7 @@ tokenList.forEach(token=> {
     tokenImg.rel = 'prefetch';
     tokenImg.as = 'image';
     tokenImg.href = `/tokenIcons/${token.icon}`;
-    tokenImg.dataset['caip-19'] = `cosmos:${chainId}:${token.address}`;
+    tokenImg.dataset['caip-19'] = `cosmos:${chainId}:snip20/${token.address}`;
     document.getElementsByTagName('head')[0].appendChild(tokenImg);
 })
 
