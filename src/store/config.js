@@ -4,7 +4,7 @@ export const operator_url = "https://api.blackbox.cash";
 //export const operator_url = "http://localhost:3000",
 
 //MAINNET
-export const queryJs = new CosmWasmClient("https://lcd.spartanapi.dev");
+export const queryJs = new CosmWasmClient("https://secret-4.api.trivium.network:1317");
 export const chainId = "secret-4";
 export const token_address = "secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek";
 export const token_code_hash = "AF74387E276BE8874F07BEC3A87023EE49B0E7EBE08178C49D0A49C3C98ED60E";
