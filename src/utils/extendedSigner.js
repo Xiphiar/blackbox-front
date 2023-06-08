@@ -46,7 +46,7 @@ export class ExtendedSender extends SigningCosmWasmClient {
                 () => {
                 return this.restClient.txById(txHash);
                 },
-                null,
+                undefined,
                 { retriesMax: retries, interval: interval },
             );
 

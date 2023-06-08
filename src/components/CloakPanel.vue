@@ -31,7 +31,7 @@
 
 
 <script>
-import { getSigningClient, countDecimals } from '../utils/keplrHelper'
+import { getSigningClient, countDecimals, getFeeForExecute } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
 import { chainId, token_address, cloak_address } from '../store/config';
@@ -134,7 +134,7 @@ export default {
                 }
 
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(token_address, sendMsg);
+                let response = await this.$store.state.secretJs.execute(token_address, sendMsg, '', [], getFeeForExecute(150_000));
                 if (response.code){
                     this.toast.error(`Transaction Failed: ${response.raw_log}`, {
                         timeout: 8000

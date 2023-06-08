@@ -93,4 +93,12 @@ function countDecimals(value) {
     return value.toString().split(".")[1]?.length || 0; 
 }
 
-export { getSigningClient, isValidAddress, countDecimals }
+const gasPriceUscrt = 0.0125;
+function getFeeForExecute(gas) {
+  return {
+    amount: [{ amount: String(Math.floor(gas * gasPriceUscrt) + 1), denom: 'uscrt' }],
+    gas: String(gas),
+  };
+}
+
+export { getSigningClient, isValidAddress, countDecimals, getFeeForExecute }
