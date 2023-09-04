@@ -7,7 +7,6 @@
 <script>
 import { getSigningClient } from '../utils/keplrHelper'
 import { useToast } from "vue-toastification";
-import { chainId } from '../store/config';
 
 export default {
     name: 'WalletButton',
@@ -45,7 +44,7 @@ export default {
 
                 //ensure signing client is in glibal state
                 if (!this.$store.getters.hasSigningClient){
-                    this.$store.dispatch("setSigningClient", await getSigningClient(chainId));
+                    this.$store.dispatch("setSigningClient", await getSigningClient());
                 }
 
                 //show button again

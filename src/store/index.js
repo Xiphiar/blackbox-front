@@ -1,11 +1,12 @@
 import { createStore } from 'vuex'
+import { getKeyHistory } from '../utils/helpers'
 
 export default createStore({
     state: {
         //DO NOT CHANGE
-        key_history: JSON.parse(localStorage.getItem('cloak_key_history')) || [],
+        key_history: getKeyHistory(),
         secretJs: null,
-      },
+    },
     mutations: {
         UPDATE_SIGNER(state, payload){
             state.secretJs = payload

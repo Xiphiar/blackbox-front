@@ -108,7 +108,7 @@ export default {
 
                 //ensure signing client is in global state
                 if (!this.$store.getters.hasSigningClient){
-                    this.$store.dispatch("setSigningClient", await getSigningClient("secret-4"));
+                    this.$store.dispatch("setSigningClient", await getSigningClient());
                 }
                 
                 //show processing toast

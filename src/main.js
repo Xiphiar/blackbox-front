@@ -4,7 +4,7 @@ import store from './store'
 import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
-import { chainId, cloak_address, deaddrop_address } from './store/config'
+import { chainId, cloakAddress, deaddropAddress } from './store/config'
 import { tokenList } from './store/tokens';
 
 const whip003 = {
@@ -27,12 +27,12 @@ const whip003 = {
     contracts: {
         cloak: {
             chain: `cosmos:${chainId}`,
-            address: cloak_address,
+            address: cloakAddress,
             label: "BlackBox Cloak V3"
           },
         deaddrop: {
             chain: `cosmos:${chainId}`,
-            address: deaddrop_address,
+            address: deaddropAddress,
             label: "BlackBox DeadDrop"
         },
     }

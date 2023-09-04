@@ -1,4 +1,5 @@
 import { Bech32 } from "@iov/encoding";
+import { chainId, lcd, rpc } from "../store/config"
 
 const { BroadcastMode } = require('secretjs');
 const { ExtendedSender } = require('./extendedSigner')
@@ -11,10 +12,10 @@ const customFees = {
 
 async function suggestPulsar() {
     await window.keplr.experimentalSuggestChain({
-        chainId: "pulsar-2",
+        chainId: chainId,
         chainName: 'Secret Pulsar',
-        rpc: "https://rpc.pulsar.griptapejs.com",
-        rest: "https://api.pulsar.griptapejs.com",
+        rpc: rpc,
+        rest: lcd,
         bip44: {
             coinType: 529,
         },
@@ -55,19 +56,19 @@ async function suggestPulsar() {
     });
 }
 
-async function getSigningClient(chainId) {
-    let apiUrl = "https://secret-4.api.trivium.network:1317"
-    if (chainId.includes("ulsar")){
-        await suggestPulsar();
-        apiUrl = "https://pulsar-2.api.trivium.network:1317"
-    }
+async function getSigningClient() {
     if (!window.keplr) throw 'Keplr Wallet not found. Is it enabled and unlocked?';
+
+    if (chainId.includes('pulsar')){
+        await suggestPulsar();
+    }
+
     window.keplr.enable(chainId);
     const offlineSigner = window.getOfflineSigner(chainId);
     const enigmaUtils = window.getEnigmaUtils(chainId);
     const accounts = await offlineSigner.getAccounts();
     return new ExtendedSender(
-        apiUrl,
+        lcd,
         accounts[0].address,
         offlineSigner,
         enigmaUtils,
@@ -93,7 +94,7 @@ function countDecimals(value) {
     return value.toString().split(".")[1]?.length || 0; 
 }
 
-const gasPriceUscrt = 0.0125;
+const gasPriceUscrt = 0.1;
 function getFeeForExecute(gas) {
   return {
     amount: [{ amount: String(Math.floor(gas * gasPriceUscrt) + 1), denom: 'uscrt' }],

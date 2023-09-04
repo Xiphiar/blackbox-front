@@ -21,7 +21,7 @@
 import { getFeeForExecute, getSigningClient } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
-import { chainId, cloak_address } from '../store/config';
+import { cloakAddress } from '../store/config';
 
 export default {
     name: 'CloakCancelPanel',
@@ -63,7 +63,7 @@ export default {
 
                 //ensure signing client is in global state
                 if (!this.$store.getters.hasSigningClient){
-                    this.$store.dispatch("setSigningClient", await getSigningClient(chainId));
+                    this.$store.dispatch("setSigningClient", await getSigningClient());
                 }
 
                 //message for the cloak contract
@@ -74,7 +74,7 @@ export default {
                 }; 
 
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(cloak_address, cloakMsg, '', [], getFeeForExecute(80_000));
+                let response = await this.$store.state.secretJs.execute(cloakAddress, cloakMsg, '', [], getFeeForExecute(80_000));
                 if (response.code){
                     this.toast.error(`Transaction Failed: ${response.raw_log}`, {
                         timeout: 8000
