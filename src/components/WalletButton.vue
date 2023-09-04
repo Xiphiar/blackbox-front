@@ -1,5 +1,5 @@
 <template>
-    <button v-bind:class="getClass()" v-bind:disabled="disabled" v-html="getContents()" v-on:click="ConnectWallet" >
+    <button v-bind:class="getClass()" v-bind:disabled="this.$store.getters.hasSigningClient" v-html="getContents()" v-on:click="ConnectWallet" >
     </button>
 </template>
 

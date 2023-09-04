@@ -7,7 +7,7 @@
             <Button v-on:click="UseDeaddrop" text="DeadDrop" />
         </div>
         <div>
-            <Button text="???"  disabled="true" />
+            <Button text="???" :disabled="true" />
         </div>
     </div>
     
