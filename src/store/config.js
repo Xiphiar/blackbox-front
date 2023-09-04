@@ -1,6 +1,9 @@
 import { CosmWasmClient } from "secretjs";
 
-if (!process.env.VUE_APP_CHAIN_ID) throw 'VUE_APP_CHAIN_ID is undefined'
+if (!process.env.VUE_APP_CHAIN_ID) {
+    alert('VUE_APP_CHAIN_ID is undefined')
+    throw 'VUE_APP_CHAIN_ID is undefined'
+}
 
 export const operator_url = "https://api.blackbox.cash";
 
