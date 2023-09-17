@@ -30,6 +30,7 @@
             <h4>Pending transactions can be canceled on the following page:</h4>
             <div class="withdraw pointer"><a v-on:click="ToCancel">(Cancel Pending Transactions)</a></div>
         </div>
+        <img class="return pointer" src="@/assets/BackArrow.svg" alt="Back" v-on:click="ReturnHome">
     </form>
 </template>
 
