@@ -1,13 +1,13 @@
 <template>
     <div>
         <div>
-            <Button v-on:click="UseCloak" text="Cloak" />
-        </div>
-        <div>
             <Button v-on:click="UseDeaddrop" text="DeadDrop" />
         </div>
         <div>
-            <Button text="???" :disabled="true" />
+            <Button v-on:click="UseDecoy" text="Decoy" />
+        </div>
+        <div>
+            <Button v-on:click="UseCloak" text="Cloak" />
         </div>
     </div>
     
@@ -27,6 +27,9 @@ export default {
         },
         UseDeaddrop: function() {
             this.$emit('UseDeaddrop')
+        },
+        UseDecoy: function() {
+            this.$emit('UseDecoy')
         }
     }
 }

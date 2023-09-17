@@ -2,7 +2,16 @@
     <body>
         
         <div class="panel">
-            <component :is="PanelType" v-on:UseCloak="SetCloak" v-on:UseDeaddrop="SetDeaddrop" v-on:ReturnHome="SetHome" v-on:ToReceive="SetReceive" v-on:ToCloakReceive="SetCloakReceive" v-on:UseCancel="SetCloakCancel"></component>
+            <component
+                :is="PanelType"
+                v-on:UseCloak="SetCloak"
+                v-on:UseDeaddrop="SetDeaddrop"
+                v-on:UseDecoy="SetDecoy"
+                v-on:ReturnHome="SetHome"
+                v-on:ToReceive="SetReceive"
+                v-on:ToCloakReceive="SetCloakReceive"
+                v-on:UseCancel="SetCloakCancel"
+            />
         </div>
 
         <div class="info">
@@ -20,6 +29,7 @@
 <script>
 import CloakPanel from './CloakPanel.vue'
 import DeaddropSendPanel from './DeaddropSendPanel.vue'
+import DecoySendPanel from './DecoySendPanel.vue'
 import DeaddropReceivePanel from './DeaddropReceivePanel.vue'
 import CloakReceivePanel from './CloakReceivePanel.vue'
 import CloakCancelPanel from './CloakCancelPanel.vue'
@@ -37,9 +47,9 @@ export default {
         CloakCancelPanel,
         ButtonPanel,
         DeaddropSendPanel,
+        DecoySendPanel,
         DeaddropReceivePanel,
         GlitchedWriter
-    
     },
     data() {
         return {
@@ -68,6 +78,11 @@ export default {
             this.PanelType = DeaddropSendPanel
             this.subtitle = "/DeadDrop"
             this.description = "Use an alias to receive tokens without having to reveal your address. Generate one randomly or customize your own."
+        },
+        SetDecoy: function(){
+            this.PanelType = DecoySendPanel
+            this.subtitle = "/Decoy"
+            this.description = "Seed your trail with decoys to send tokens without a trace."
         },
         SetReceive: function(){
             this.PanelType = DeaddropReceivePanel
