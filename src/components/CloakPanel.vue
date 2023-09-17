@@ -1,6 +1,6 @@
 <template>
     <form class="action-box controls">
-        <div class="input-section">
+        <!-- <div class="input-section">
             <div class="tx-type-section">
                 <span class="selected">Send</span>
                 <span> / </span>
@@ -24,7 +24,12 @@
             <i class="c-inline-spinner" />
         </div>
         <div class="fee">Fee: 1 sSCRT</div>
-        <img class="return pointer" src="@/assets/BackArrow.svg" alt="Back" v-on:click="ReturnHome">
+        <img class="return pointer" src="@/assets/BackArrow.svg" alt="Back" v-on:click="ReturnHome"> -->
+        <div class="discontinued">
+            <h3>Cloak has been discontinued.</h3>
+            <h4>Pending transactions can be canceled on the following page:</h4>
+            <div class="withdraw pointer"><a v-on:click="ToCancel">(Cancel Pending Transactions)</a></div>
+        </div>
     </form>
 </template>
 
@@ -32,15 +37,15 @@
 
 <script>
 import { getSigningClient, countDecimals, getFeeForExecute } from '../utils/keplrHelper'
-import TxSubmit from './TxSubmit.vue'
+// import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
 import { cloakAddress, sscrtAddress } from '../store/config';
 
 export default {
     name: 'CloakPanel',
-    components: {
-        TxSubmit
-    },
+    // components: {
+    //     TxSubmit
+    // },
     data() {
         return {
             state: {
@@ -304,6 +309,11 @@ input {
 
 .unselected:hover {
     filter: brightness(25%);
+}
+
+.discontinued {
+    height: calc(100% - 40vh);
+    padding: 20vh 5vh;
 }
 
 </style>

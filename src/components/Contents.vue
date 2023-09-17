@@ -52,17 +52,17 @@ export default {
         SetCloak: function(){
             this.PanelType = CloakPanel
             this.subtitle = "/Cloak"
-            this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
+            // this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
         },
         SetCloakReceive: function(){
             this.PanelType = CloakReceivePanel
             this.subtitle = "/Cloak"
-            this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
+            // this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
         },
         SetCloakCancel: function(){
             this.PanelType = CloakCancelPanel
             this.subtitle = "/Cloak"
-            this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
+            // this.description = "Seed another wallet with SCRT gas without a trace. Escape doxing with no link to your old address."
         },
         SetDeaddrop: function(){
             this.PanelType = DeaddropSendPanel
