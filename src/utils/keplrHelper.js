@@ -1,14 +1,7 @@
 import { Bech32 } from "@iov/encoding";
 import { chainId, lcd, rpc } from "../store/config"
 
-const { BroadcastMode } = require('secretjs');
-const { ExtendedSender } = require('./extendedSigner')
-
-const customFees = {
-    exec: {
-        gas: "150000",
-    }
-}
+const { SecretNetworkClient } = require('secretjs');
 
 async function suggestPulsar() {
     await window.keplr.experimentalSuggestChain({
@@ -65,16 +58,15 @@ async function getSigningClient() {
 
     window.keplr.enable(chainId);
     const offlineSigner = window.getOfflineSigner(chainId);
-    const enigmaUtils = window.getEnigmaUtils(chainId);
+    const encryptionUtils = window.getEnigmaUtils(chainId);
     const accounts = await offlineSigner.getAccounts();
-    return new ExtendedSender(
-        lcd,
-        accounts[0].address,
-        offlineSigner,
-        enigmaUtils,
-        customFees,
-        BroadcastMode.Sync
-    )
+    return new SecretNetworkClient({
+        url: lcd,
+        chainId,
+        wallet: offlineSigner,
+        walletAddress: accounts[0].address,
+        encryptionUtils,
+    })
 }
 
 function isValidAddress(address) {

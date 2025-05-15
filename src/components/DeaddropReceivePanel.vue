@@ -27,7 +27,7 @@
 
 
 <script>
-import { getSigningClient, getFeeForExecute } from '../utils/keplrHelper'
+import { getSigningClient } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import { useToast } from "vue-toastification";
 import { deaddropAddress, sscrtAddress } from '../store/config';
@@ -91,46 +91,46 @@ export default {
                     }
                 }
 
-                //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(sscrtAddress, sendMsg, '', [], getFeeForExecute(80_000));
-                if (response.code){
-                    this.toast.error(`Transaction Failed: ${response.raw_log}`, {
-                        timeout: 8000
-                    })
-                } else {
-                    this.toast("Transaction Processing...", {
-                        id: "tx-processing",
-                        timeout: false,
-                        closeButton: false
-                    });
-                }
+                this.toast("Transaction Processing...", {
+                    id: "tx-processing",
+                    timeout: false,
+                    closeButton: false
+                });
 
-                //poll tx's endpoint every 4000ms up to 15 times to check when tx is processed. Returns full tx object
-                const data = await this.$store.state.secretJs.checkTx(response.transactionHash,4000,15)
+                let response = await this.$store.state.secretJs.tx.compute.executeContract({
+                    sender: this.$store.state.secretJs.address,
+                    contract_address: sscrtAddress,
+                    msg: sendMsg,
+                }, { gasLimit: 80_000 });
+
                 this.toast.dismiss("tx-processing");
-                this.state.loading= false;
-
-                //if error
-                if (data.code){
-                    this.toast.error(`Transaction Failed: ${data.raw_log}`, {
+                
+                if (response.code){
+                    this.toast.error(`Transaction Failed: ${response.rawLog}`, {
                         timeout: 8000
                     })
-                } else {
-                    const logs = this.$store.state.secretJs.processLogs(data);
-                    console.log(logs.kv_logs.wasm.alias)
-                    this.toast.success("Transaction Succeeded!", {
-                        timeout: 8000
-                    });
-                    if (!logs.kv_logs.wasm.alias) throw "Failed to fetch alias from transaction. Please check the TX logs in the F12 console."
-                    this.state.outAlias = logs.kv_logs.wasm.alias
+
+                    return;
                 }
+
+                console.log(response)
+                const wasmLogs = response.jsonLog[0].events.find(e => e.type === "wasm");
+                const aliasAttribute = wasmLogs.attributes.find(e => e.key === "alias")?.value;
+
+                this.toast.success("Transaction Succeeded!", {
+                    timeout: 8000
+                });
+                
+                if (!aliasAttribute) throw "Failed to fetch alias from transaction. Please check the TX logs in the F12 console."
+                this.state.outAlias = aliasAttribute
                 
             } catch(e) {
                 console.error(e)
-                this.state.loading= false;
                 this.toast.error(`${e}`, {
                     timeout: 8000
                 })
+            } finally {
+                this.state.loading= false;
             }
 
         }

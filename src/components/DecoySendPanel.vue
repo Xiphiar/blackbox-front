@@ -30,12 +30,12 @@
 
 
 <script>
-import { getSigningClient, countDecimals, getFeeForExecute } from '../utils/keplrHelper'
+import { getSigningClient, countDecimals } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import SNIP25Panel from './SNIP25Panel.vue'
 import { useToast } from "vue-toastification";
 import snip25 from '../store/snip25.json'
-import { getDecoys2, getBalance } from '../utils/helpers'
+import { getDecoys, getBalance } from '../utils/helpers'
 import { queryJs } from '../store/config';
 
 
@@ -105,11 +105,11 @@ export default {
             this.RefreshBalance()
         },
         RefreshBalance: async function() {
-            if (!this.$store.state.secretJs?.senderAddress) return;
+            if (!this.$store.state.secretJs?.address) return;
             try {
                 this.state.loading_balance = true;
 
-                const {balance, needs_vk} = await getBalance(queryJs, this.TokenAddress, this.$store.state.secretJs.senderAddress);
+                const {balance, needs_vk} = await getBalance(queryJs, this.TokenAddress, this.$store.state.secretJs.address);
                 if (needs_vk) {
                     this.state.needs_vk = true;
                     this.state.loading_balance = false;
@@ -183,7 +183,7 @@ export default {
                     closeButton: false
                 });
                 // Get Decoy Addresses
-                const decoys = await getDecoys2(this.TokenAddress);
+                const decoys = await getDecoys(this.TokenAddress);
                 console.log(decoys);
                 this.toast.dismiss("get-decoys");
 
@@ -196,56 +196,43 @@ export default {
                         recipient: this.state.destination.trim(),
                         amount: amount.toString(),
                         decoys,
-
                     }
                 }; 
 
-                //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(this.TokenAddress, snip25Handle, '', [], getFeeForExecute(160_000));
-                if (response.code){
-                    this.toast.error(`Transaction Failed: ${response.raw_log}`, {
+                this.toast("Transaction Processing...", {
+                    id: "tx-processing",
+                    timeout: false,
+                    closeButton: false
+                });
+                
+                let response = await this.$store.state.secretJs.tx.compute.executeContract({
+                    sender: this.$store.state.secretJs.address,
+                    contract_address: this.TokenAddress,
+                    msg: snip25Handle,
+                }, { gasLimit: 160_000 });
+
+                this.toast.dismiss("tx-processing");
+
+                if (response.code) {
+                    console.error(response.rawLog)
+                    this.toast.error(`Transaction Failed: ${response.rawLog}`, {
                         timeout: 8000
                     })
-
-                    //show button again
-                    this.state.loading=false;
 
                     //stop execution
                     return false;
-
-                } else {
-                    this.toast("Transaction Processing...", {
-                        id: "tx-processing",
-                        timeout: false,
-                        closeButton: false
-                    });
                 }
 
-                //poll tx's endpoint every 4000ms up to 15 times to check when tx is processed. Returns full tx object
-                const data = await this.$store.state.secretJs.checkTx(response.transactionHash,4000,15)
-                console.log(data);
-                this.toast.dismiss("tx-processing");
-
-                //show button again
-                this.state.loading=false;
-
-                //if error
-                if (data.code){
-                    this.toast.error(`Transaction Failed: ${data.raw_log}`, {
-                        timeout: 8000
-                    })
-                } else {
-                    this.toast.success("Transaction Succeeded!", {
-                        timeout: 8000
-                    });
-                }
+                this.toast.success("Transaction Succeeded!", {
+                    timeout: 8000
+                });
             } catch(e) {
                 this.toast.error(`Unknown error occured: ${e}`, {
                     timeout: 8000
                 })
                 this.toast.dismiss("get-decoys");
-
-                //show button again
+                this.toast.dismiss("tx-processing");
+            } finally {
                 this.state.loading=false;
             }
         }

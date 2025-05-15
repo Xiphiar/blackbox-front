@@ -132,7 +132,7 @@ export default {
                 }
 
                 if (response.data.code){
-                    throw `Transaction Failed: ${response.data.raw_log}`
+                    throw `Transaction Failed: ${response.data.rawLog}`
                 }
 
                 //show success toast if no error was thrown

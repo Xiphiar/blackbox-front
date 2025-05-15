@@ -1,4 +1,4 @@
-import { CosmWasmClient } from "secretjs";
+import { SecretNetworkClient } from "secretjs";
 
 if (!process.env.VUE_APP_CHAIN_ID) {
     alert('VUE_APP_CHAIN_ID is undefined')
@@ -8,8 +8,8 @@ if (!process.env.VUE_APP_CHAIN_ID) {
 export const operator_url = "https://api.blackbox.cash";
 
 const MainnetConfig = {
-    rpc: 'https://rpc.secret.express:443',
-    lcd: 'https://lcd.secret.express:443',
+    rpc: 'https://secret.api.trivium.network:26657',
+    lcd: 'https://secret.api.trivium.network:1317',
     chainId: 'secret-4',
     sscrtAddress: "secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek",
     sscrtHash: "AF74387E276BE8874F07BEC3A87023EE49B0E7EBE08178C49D0A49C3C98ED60E",
@@ -28,7 +28,7 @@ const TestnetConfig = {
 }
 
 const ChainConfig = process.env.VUE_APP_CHAIN_ID.includes('pulsar') ? TestnetConfig : MainnetConfig
-export const queryJs = new CosmWasmClient(ChainConfig.lcd);
+export const queryJs = new SecretNetworkClient({url: ChainConfig.lcd});
 
 export const {
     rpc,

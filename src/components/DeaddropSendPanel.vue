@@ -30,7 +30,7 @@
 
 
 <script>
-import { getSigningClient, countDecimals, getFeeForExecute } from '../utils/keplrHelper'
+import { getSigningClient, countDecimals } from '../utils/keplrHelper'
 import TxSubmit from './TxSubmit.vue'
 import TokenPanel from './TokenPanel.vue'
 import { useToast } from "vue-toastification";
@@ -151,51 +151,40 @@ export default {
                     }
                 }
 
-                //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
-                let response = await this.$store.state.secretJs.execute(this.TokenAddress, sendMsg, '', [], getFeeForExecute(150_000));
+                this.toast("Transaction Processing...", {
+                    id: "tx-processing",
+                    timeout: false,
+                    closeButton: false
+                });
+
+                let response = await this.$store.state.secretJs.tx.compute.executeContract({
+                    sender: this.$store.state.secretJs.address,
+                    contract_address: this.TokenAddress,
+                    msg: sendMsg,
+                }, { gasLimit: 150_000 });
+
+                this.toast.dismiss("tx-processing");
+
                 if (response.code){
-                    this.toast.error(`Transaction Failed: ${response.raw_log}`, {
+                    this.toast.error(`Transaction Failed: ${response.rawLog}`, {
                         timeout: 8000
                     })
-
-                    //show button again
-                    this.state.loading=false;
 
                     //stop execution
                     return false;
-
-                } else {
-                    this.toast("Transaction Processing...", {
-                        id: "tx-processing",
-                        timeout: false,
-                        closeButton: false
-                    });
                 }
 
-                //poll tx's endpoint every 4000ms up to 15 times to check when tx is processed. Returns full tx object
-                const data = await this.$store.state.secretJs.checkTx(response.transactionHash,4000,15)
-                console.log(data);
-                this.toast.dismiss("tx-processing");
+                this.toast.success("Transaction Succeeded!", {
+                    timeout: 8000
+                });
 
-                //show button again
-                this.state.loading=false;
-
-                //if error
-                if (data.code){
-                    this.toast.error(`Transaction Failed: ${data.raw_log}`, {
-                        timeout: 8000
-                    })
-                } else {
-                    this.toast.success("Transaction Succeeded!", {
-                        timeout: 8000
-                    });
-                }
             } catch(e) {
+                this.toast.dismiss("tx-processing");
                 this.toast.error(`Unknown error occured: ${e}`, {
                     timeout: 8000
                 })
-
-                //show button again
+            } finally {
+                // Show the button again
                 this.state.loading=false;
             }
         }

@@ -27,7 +27,7 @@ export const getDecoys = async () => {
  * @returns {Promise<string[]>} Array of random addresses.
  */
  export const getDecoys2 = async (contract) => {
-    const url = `${lcd}/cosmos/tx/v1beta1/txs?events=execute.contract_address='${contract}'`
+    const url = `${lcd}/cosmos/tx/v1beta1/txs?query=execute.contract_address='${contract}'`
     const {data} = await axios.get(url)
 
     console.log('Results:', data.txs.length);

@@ -2,7 +2,7 @@
   <footer>
     <!-- Copyright -->
     <div>
-      © 2022 
+      © {{ new Date().getFullYear() }}
       <span><img class="triv-logo" src="@/assets/Trivium_white.svg" alt=""></span>
       <a class="text-dark" href="https://trivium.network/">Trivium</a>
     </div>

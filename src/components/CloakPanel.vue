@@ -142,7 +142,7 @@ export default {
                 //"Sync" broadcast mode returns tx hash only (or error if it failed to enter the mempool)
                 let response = await this.$store.state.secretJs.execute(sscrtAddress, sendMsg, '', [], getFeeForExecute(150_000));
                 if (response.code){
-                    this.toast.error(`Transaction Failed: ${response.raw_log}`, {
+                    this.toast.error(`Transaction Failed: ${response.rawLog}`, {
                         timeout: 8000
                     })
                                         
@@ -169,7 +169,7 @@ export default {
 
                 //if error
                 if (data.code){
-                    this.toast.error(`Transaction Failed: ${data.raw_log}`, {
+                    this.toast.error(`Transaction Failed: ${data.rawLog}`, {
                         timeout: 8000
                     })
                 } else {
